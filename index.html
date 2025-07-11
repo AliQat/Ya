@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT BWSI RACECAR Worksheet Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- KaTeX for LaTeX Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMVIhbCwHMAq2BpbK3EVXqr5QJrrpJvTBIauKuc8EaT4biIMrq" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .btn {
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        }
+        .card {
+            background-color: #1f2937; /* gray-800 */
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid #374151; /* gray-700 */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+        .solution-box {
+            background-color: rgba(79, 70, 229, 0.1); /* indigo-600 with alpha */
+            border: 1px solid rgba(99, 102, 241, 0.4); /* indigo-500 with alpha */
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        /* Highlight color for important text */
+        strong, .highlight {
+            color: #818cf8; /* indigo-400 */
+        }
+        /* KaTeX color fix for dark theme */
+        .katex {
+            color: #d1d5db; /* gray-300 */
+        }
+        .desmos-link {
+            display: inline-block;
+            background-color: #10B981;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+        .desmos-link:hover {
+            background-color: #059669;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-indigo-400">A Stable System</h1>
+            <p class="text-lg text-gray-400 mt-2">MIT BWSI Autonomous RACECAR 2025, Worksheet 2</p>
+            <p class="text-sm text-gray-500 mt-1">An Interactive Guide</p>
+        </header>
+
+        <main id="worksheet-container">
+            <!-- Steps will be injected here by JavaScript -->
+        </main>
+
+        <div class="flex justify-between mt-8">
+            <button id="prevBtn" class="btn bg-gray-700 hover:bg-gray-600 text-gray-200 font-bold py-2 px-6 rounded-lg" disabled>Previous</button>
+            <span id="step-counter" class="self-center text-gray-500"></span>
+            <button id="nextBtn" class="btn bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded-lg">Next</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const steps = [
+                // Step 1: Intro
+                {
+                    title: "Welcome!",
+                    content: `
+                        <div class="card text-center">
+                            <h2 class="text-2xl font-semibold mb-4 text-white">Let's Solve This Worksheet!</h2>
+                            <p class="text-gray-400">This interactive guide will walk you through each problem from the worksheet step-by-step. We'll cover free-body diagrams, differential equations, aliasing, damping, and controller design.</p>
+                            <p class="mt-4">Click "Next" to begin with Problem 1.</p>
+                        </div>
+                    `
+                },
+                // Step 2: Problem 1 - FBD and DE
+                {
+                    title: "Problem 1, Part 1: Free-Body Diagram & Equation",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-4 text-white">Problem Statement</h3>
+                            <p class="bg-gray-800 p-4 rounded-lg border border-gray-700">A mass-spring system contains a block attached to a spring, which is attached to a wall. Assume that there is no friction. The block has a mass of <strong>4.2kg</strong>, and the spring has a spring constant of <strong>3.5 N/m</strong>. The block is initially displaced <strong>3m</strong> away from its position at steady state, and its position is measured using an ultrasonic sensor sampling at <strong>250Hz</strong>. When the sampling begins, the block is at rest.</p>
+                            <p class="mt-6"><strong>Task:</strong> Draw a free-body diagram of the system, and derive the second-order differential equation that represents the system.</p>
+                            <div class="mt-6">
+                                <h4 class="font-semibold text-white">1. Free-Body Diagram (FBD)</h4>
+                                <p>The only horizontal force acting on the mass is the spring force, which follows Hooke's Law: $F_s = -kx$. The negative sign indicates it's a restoring force, always pulling the block back towards equilibrium (x=0).</p>
+                                <img src="https://placehold.co/600x200/1f2937/9ca3af?text=Block+%3C--%5BF_s%3D-kx%5D--+Spring" alt="Free Body Diagram" class="mt-2 rounded-lg mx-auto border border-gray-700">
+                                <h4 class="font-semibold mt-6 text-white">2. Deriving the Equation</h4>
+                                <p>Using Newton's Second Law, $\Sigma F = ma$:</p>
+                                <p class="ml-4">$-kx = m \cdot a$</p>
+                                <p>Since acceleration $a$ is the second derivative of position $x$ with respect to time $t$, we write $a = \\frac{d^2x}{dt^2}$.</p>
+                                <p class="ml-4">$-kx = m \\frac{d^2x}{dt^2}$</p>
+                                <p>Rearranging gives us the standard form for a second-order homogeneous differential equation:</p>
+                                <div class="solution-box text-center">
+                                    <p class="text-lg font-bold">$$m \\frac{d^2x}{dt^2} + kx = 0$$</p>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                // Step 3: Problem 1 - Solve DE
+                {
+                    title: "Problem 1, Part 2: Solving for x(t)",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Solving the Undamped System</h3>
+                            <p>We start with our equation: $m \\frac{d^2x}{dt^2} + kx = 0$. Let's plug in our values: $m = $ <strong>4.2</strong> and $k = $ <strong>3.5</strong>.</p>
+                            <p class="ml-4">$4.2 \\frac{d^2x}{dt^2} + 3.5x = 0$</p>
+                            <p>Dividing by mass, we get: $\\frac{d^2x}{dt^2} + \\frac{3.5}{4.2}x = 0$, which simplifies to $\\frac{d^2x}{dt^2} + \\frac{5}{6}x = 0$.</p>
+                            <p class="mt-4">This equation is in the form $\\frac{d^2x}{dt^2} + \\omega_0^2x = 0$, where $\\omega_0$ is the natural angular frequency. So, $\\omega_0 = \\sqrt{5/6} \\approx$ <strong>0.913 rad/s</strong>.</p>
+                            
+                            <h4 class="font-semibold mt-6 text-white">General Solution & Initial Conditions</h4>
+                            <p>The general solution is $x(t) = A\\cos(\\omega_0t) + B\\sin(\\omega_0t)$.</p>
+                            <p>We use the initial conditions to find A and B:</p>
+                            <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+                                <li><strong>Condition 1: $x(0) = 3$</strong>
+                                    <br><span class="ml-4">$x(0) = A\\cos(0) + B\\sin(0) = A$. So, <strong>$A = 3$</strong>.</span></li>
+                                <li><strong>Condition 2: $x'(0) = 0$</strong>
+                                    <br>First, find the derivative $x'(t) = -A\\omega_0\\sin(\\omega_0t) + B\\omega_0\\cos(\\omega_0t)$.
+                                    <br><span class="ml-4">$x'(0) = B\\omega_0$. Since $x'(0) = 0$, we must have <strong>$B = 0$</strong>.</span></li>
+                            </ul>
+                            <div class="solution-box mt-4">
+                                <p class="text-lg font-bold text-center">$$x(t) = 3\\cos(\\sqrt{5/6}t)$$</p>
+                            </div>
+
+                            <h4 class="font-semibold mt-6 text-white">Plotting the Signal</h4>
+                            <div class="text-center bg-gray-800 p-4 rounded-lg border border-gray-700">
+                                <p>To visualize this, go to a graphing tool like <a href="https://www.desmos.com/calculator" target="_blank" class="text-indigo-400 underline">Desmos</a> and plot the following equation (using x instead of t):</p>
+                                <p class="mt-2 font-mono bg-gray-900 p-2 rounded">y = 3cos(sqrt(5/6) * x)</p>
+                                <a href="https://www.desmos.com/calculator" target="_blank" class="desmos-link">Open Desmos</a>
+                            </div>
+                            <p class="text-center mt-4 text-gray-400">You'll see a wave that oscillates forever with a constant amplitude. Therefore, it <strong>neither converges nor diverges</strong>.</p>
+                        </div>
+                    `
+                },
+                 // Step 4: Problem 1 - Aliasing
+                {
+                    title: "Problem 1, Part 3: Aliasing Analysis",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Is the Sensor Aliasing?</h3>
+                            <p>Aliasing occurs when a signal is sampled too slowly. The <strong>Nyquist-Shannon sampling theorem</strong> gives us the condition to avoid this.</p>
+                            <div class="bg-gray-800 border border-gray-700 p-4 rounded-lg text-center mt-4">
+                                <p class="font-semibold text-white">Nyquist Criterion</p>
+                                <p class="mt-2">$$f_s \\ge 2 \\cdot f_{\\text{max}}$$</p>
+                                <p>Where $f_s$ is the sampling frequency and $f_{\\text{max}}$ is the highest frequency in the signal.</p>
+                            </div>
+
+                            <h4 class="font-semibold mt-6 text-white">Step 1: Find the signal frequency ($f_0$)</h4>
+                            <p>We know the angular frequency $\\omega_0 = \\sqrt{5/6} \\approx 0.9129 \\text{ rad/s}$.</p>
+                            <p>To convert from rad/s to Hertz (Hz), we use the formula $f = \\omega / (2\\pi)$.</p>
+                            <p class="ml-4">$f_0 = 0.9129 / (2\\pi) \\approx$ <strong>0.1453 Hz</strong></p>
+
+                            <h4 class="font-semibold mt-6 text-white">Step 2: Apply the Nyquist Criterion</h4>
+                            <p>Our sensor's sampling frequency is $f_s = $ <strong>250 Hz</strong>.</p>
+                            <p>The minimum required sampling frequency (the Nyquist rate) is $2 \\cdot f_0 = 2 \\cdot 0.1453 = $ <strong>0.2906 Hz</strong>.</p>
+
+                            <h4 class="font-semibold mt-6 text-white">Conclusion</h4>
+                            <p>We compare our sampling frequency to the Nyquist rate:</p>
+                            <div class="solution-box text-center">
+                                <p class="text-lg font-bold">$$250 \\text{ Hz} \\gg 0.2906 \\text{ Hz}$$</p>
+                                <p class="mt-2">Since the sampling frequency is much greater than twice the signal frequency, <strong>there is no aliasing.</strong></p>
+                            </div>
+                        </div>
+                    `
+                },
+                // Step 5: Problem 1 - Critical Damping
+                {
+                    title: "Problem 1, Part 4: Adding a Damper",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Optimizing with Critical Damping</h3>
+                            <p>To get the system to return to steady state as fast as possible without oscillating, we add a damper to make it <strong>critically damped</strong>.</p>
+                            <p>The new equation of motion is: $mx'' + bx' + kx = 0$.</p>
+                            
+                            <h4 class="font-semibold mt-6 text-white">Condition for Critical Damping</h4>
+                            <p>Critical damping occurs when the discriminant of the characteristic equation ($mr^2 + br + k = 0$) is zero.</p>
+                            <p class="text-center bg-gray-800 border border-gray-700 p-3 rounded-lg mt-2">$$\\Delta = b^2 - 4mk = 0 \\implies b^2 = 4mk$$</p>
+                            
+                            <h4 class="font-semibold mt-6 text-white">Calculate the Damping Constant ($b$)</h4>
+                            <p>We use the known values $m = $ <strong>4.2 kg</strong> and $k = $ <strong>3.5 N/m</strong>.</p>
+                            <p class="ml-4">$b = \\sqrt{4 \\cdot m \\cdot k} = \\sqrt{4 \\cdot 4.2 \\cdot 3.5} = \\sqrt{58.8}$</p>
+                            <div class="solution-box">
+                                <p class="text-lg font-bold text-center">$$b \\approx 7.668 \\text{ Ns/m}$$</p>
+                            </div>
+                        </div>
+                    `
+                },
+                // Step 6: Problem 1 - Solve Critically Damped System
+                {
+                    title: "Problem 1, Part 5: Solving the Damped System",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Solving for x(t) with Critical Damping</h3>
+                            <p>For a critically damped system, the general solution has the form:</p>
+                            <p class="text-center bg-gray-800 border border-gray-700 p-3 rounded-lg mt-2">$$x(t) = (A + Bt)e^{-\\lambda t}$$</p>
+                            <p>Where $\\lambda = b / (2m)$. Let's calculate $\\lambda$:</p>
+                            <p class="ml-4">$\\lambda = \\sqrt{58.8} / (2 \\cdot 4.2) = 7.668 / 8.4 \\approx$ <strong>0.9129</strong></p>
+                            
+                            <h4 class="font-semibold mt-6 text-white">Applying Initial Conditions</h4>
+                            <p>The conditions are the same: $x(0) = 3$ and $x'(0) = 0$.</p>
+                            <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+                                <li><strong>Condition 1: $x(0) = 3$</strong>
+                                    <br><span class="ml-4">$x(0) = (A + B \\cdot 0)e^0 = A$. So, <strong>$A = 3$</strong>.</span></li>
+                                <li><strong>Condition 2: $x'(0) = 0$</strong>
+                                    <br>Derivative: $x'(t) = Be^{-\\lambda t} - \\lambda(A + Bt)e^{-\\lambda t}$.
+                                    <br><span class="ml-4">$x'(0) = B - \\lambda A$. Since $x'(0) = 0$, $B = \\lambda A = 3\\lambda \\approx$ <strong>2.7387</strong>.</span></li>
+                            </ul>
+                            <div class="solution-box mt-4">
+                                <p class="text-lg font-bold text-center">$$x(t) = (3 + 2.7387t)e^{-0.9129t}$$</p>
+                            </div>
+
+                            <h4 class="font-semibold mt-6 text-white">Plotting the Damped Signal</h4>
+                            <div class="text-center bg-gray-800 p-4 rounded-lg border border-gray-700">
+                                <p>To visualize this, go to a graphing tool like <a href="https://www.desmos.com/calculator" target="_blank" class="text-indigo-400 underline">Desmos</a> and plot the following equation (using x instead of t):</p>
+                                <p class="mt-2 font-mono bg-gray-900 p-2 rounded">y = (3 + 2.7387x) * e^(-0.9129x)</p>
+                                <a href="https://www.desmos.com/calculator" target="_blank" class="desmos-link">Open Desmos</a>
+                            </div>
+                            <p class="text-center mt-4 text-gray-400">The system now returns to equilibrium without oscillation.</p>
+                        </div>
+                    `
+                },
+                // Step 7: Problem 1 - Settling time
+                {
+                    title: "Problem 1, Part 6: Settling Time",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Calculating Settling Time ($t_s$)</h3>
+                            <p>Settling time is defined here as the time it takes for the system to settle to within <strong>2% of its initial displacement</strong>.</p>
+                            <p>Initial displacement: $x(0) = 3\\text{m}$. 2% of this is $0.02 \\cdot 3 = $ <strong>0.06m</strong>.</p>
+                            <p>We need to solve for $t_s$ in the equation: $x(t_s) = (3 + 2.7387t_s)e^{-0.9129t_s} = 0.06$.</p>
+                            
+                            <h4 class="font-semibold mt-6 text-white">Simplifying the Equation</h4>
+                            <p>Let $z = \\lambda t_s = 0.9129t_s$. The equation becomes:</p>
+                            <p class="text-center font-bold bg-gray-800 border border-gray-700 p-3 rounded-lg mt-2">$(1 + z)e^{-z} = 0.02$</p>
+                            <p class="mt-4">By using numerical methods, we find that $z \\approx$ <strong>5.83</strong>.</p>
+
+                            <h4 class="font-semibold mt-6 text-white">Final Calculation</h4>
+                            <p>Now we solve for $t_s$: $t_s = z / \\lambda \\approx 5.83 / 0.9129$</p>
+                            <div class="solution-box mt-4">
+                                <p class="text-lg font-bold text-center">$$t_s \\approx 6.38 \\text{ seconds}$$</p>
+                            </div>
+                        </div>
+                    `
+                },
+                // Step 8: Problem 2 Intro
+                {
+                    title: "Problem 2, Part 1: Wall Following RACECAR",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Problem Statement</h3>
+                            <p class="bg-gray-800 p-4 rounded-lg border border-gray-700">A wall following RACECAR uses the second-order mass-spring-damper equation to model a controller. The setpoint is <strong>3m</strong> from the wall and the RACECAR is placed <strong>5m</strong> from the wall. The maximum turning angle is <strong>+/- 30 degrees</strong>.</p>
+                            <p class="mt-6">Let's define our terms:</p>
+                            <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+                                <li><strong>Error ($e$):</strong> Current Distance - Setpoint Distance.
+                                <br><span class="ml-4">$e(0) = 5\\text{m} - 3\\text{m} = $ <strong>2m</strong>.</span></li>
+                                <li><strong>Controller Output ($u$):</strong> This is the turning angle. $u = K_p \\cdot e + K_d \\cdot e'$.</li>
+                            </ul>
+                            <p class="mt-6"><strong>Task:</strong> Determine a value of $K_p$ that minimizes the oscillation period, given the turning angle constraint.</p>
+                        </div>
+                    `
+                },
+                 // Step 9: Problem 2 Kp
+                {
+                    title: "Problem 2, Part 2: Finding Kp",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Minimizing Oscillation Period</h3>
+                            <p>The oscillation period $T$ is inversely related to the natural frequency $\\omega_n$: $T = 2\\pi / \\omega_n$. To minimize $T$, we must maximize $\\omega_n$, which means we need to maximize $K_p$.</p>
+                            
+                            <h4 class="font-semibold mt-6 text-white">Using System Constraints</h4>
+                            <p>The controller's output is the turning angle. The maximum output $u_{\\text{max}}$ will occur at the maximum error $e_{\\text{max}}$.</p>
+                            <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+                                <li>Max turning angle: $u_{\\text{max}} = 30^\\circ = $ <strong>$\\pi/6$ radians</strong>.</li>
+                                <li>Max error: $e_{\\text{max}} = e(0) = $ <strong>2m</strong>.</li>
+                            </ul>
+                            <p class="mt-4">We set the controller equation at its limit: $u_{\\text{max}} = K_p \\cdot e_{\\text{max}}$</p>
+                            <p class="ml-4 mt-2">$\\pi/6 = K_p \\cdot 2$</p>
+                            <div class="solution-box mt-4">
+                                <p class="text-lg font-bold text-center">$$K_p = \\frac{\\pi}{12} \\approx 0.2618$$</p>
+                            </div>
+                        </div>
+                    `
+                },
+                // Step 10: Problem 2 Kd and Settling Time
+                {
+                    title: "Problem 2, Part 3: Damping and Settling Time",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Finding the Damping Term (Kd)</h3>
+                            <p>The relationship for critical damping in control terms is:</p>
+                            <p class="text-center bg-gray-800 border border-gray-700 p-3 rounded-lg mt-2">$$K_d^2 = 4 \\cdot m \\cdot K_p$$</p>
+                            <p class="mt-4">The mass $m$ of the RACECAR is not given, so our answer will be in terms of $m$.</p>
+                            <p class="ml-4">$K_d = 2\\sqrt{m \\cdot K_p}$. Substituting $K_p = \\pi/12$:</p>
+                            <div class="solution-box mt-4">
+                                <p class="text-lg font-bold text-center">$$K_d = 2\\sqrt{m \\frac{\\pi}{12}} \\approx 1.023\\sqrt{m}$$</p>
+                            </div>
+
+                            <h4 class="font-semibold mt-6 text-white">Settling Time ($t_s$) with 2% Criterion</h4>
+                            <p>The decay rate is $\\lambda = K_d / (2m) = \\sqrt{K_p / m}$. From the previous problem, $t_s \\approx 5.83/\\lambda$.</p>
+                            <p class="ml-4">$t_s \\approx 5.83\\sqrt{m / K_p}$. Substituting $K_p = \\pi/12$:</p>
+                            <div class="solution-box mt-4">
+                                <p class="text-lg font-bold text-center">$$t_s \\approx 11.4\\sqrt{m}$$</p>
+                            </div>
+                        </div>
+                    `
+                },
+                 // Step 11: Problem 2 Final
+                {
+                    title: "Problem 2, Part 4: Optimal Turning Angle",
+                    content: `
+                        <div class="card">
+                            <h3 class="text-xl font-semibold mb-2 text-white">Optimal Turning Angle for the First Frame</h3>
+                            <p>We need to find the turning angle $u$ at $t=0$ using the PD controller equation:</p>
+                            <p class="text-center bg-gray-800 border border-gray-700 p-3 rounded-lg mt-2">$$u(t) = K_p \\cdot e(t) + K_d \\cdot e'(t)$$</p>
+                            
+                            <h4 class="font-semibold mt-6 text-white">Analyze Conditions at t=0</h4>
+                            <ul class="list-disc list-inside ml-4 mt-2 space-y-2">
+                                <li><strong>Proportional Term ($K_p \\cdot e(0)$):</strong>
+                                <br>The initial error is $e(0) = 2\\text{m}$.
+                                <br><span class="ml-4">$K_p \\cdot e(0) = (\\pi/12) \\cdot 2 = $ <strong>$\\pi/6$</strong>.</span></li>
+                                
+                                <li><strong>Derivative Term ($K_d \\cdot e'(0)$):</strong>
+                                <br>The car's initial heading is 0 degrees (parallel to the wall), so the distance to the wall is not changing at $t=0$. Therefore, $e'(0) = $ <strong>0 m/s</strong>.
+                                <br><span class="ml-4">$K_d \\cdot e'(0) = K_d \\cdot 0 = 0$.</span></li>
+                            </ul>
+
+                            <h4 class="font-semibold mt-6 text-white">Calculate the Angle</h4>
+                            <p>Combine the terms: $u(0) = (\\pi/6) + 0 = \\pi/6 \\text{ radians}$</p>
+                            <div class="solution-box mt-4">
+                                <p class="text-lg font-bold text-center">The optimal turning angle is $$\\frac{\\pi}{6} \\text{ radians, or } 30^\\circ$$</p>
+                                <p class="text-sm text-center mt-1 text-indigo-300">This makes sense: at maximum error and zero error change, the controller commands the maximum corrective action.</p>
+                            </div>
+                        </div>
+                    `
+                },
+                // Final Step
+                {
+                    title: "Worksheet Complete!",
+                    content: `
+                        <div class="card text-center">
+                            <h2 class="text-2xl font-semibold mb-4 text-white">Congratulations!</h2>
+                            <p class="text-gray-400">You've reached the end of the interactive guide for this worksheet.</p>
+                            <p class="mt-4">You've worked through second-order systems, stability, damping, and PD control theory. These are fundamental concepts in robotics and autonomous systems.</p>
+                            <button onclick="location.reload()" class="mt-6 btn bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded-lg">Start Over</button>
+                        </div>
+                    `
+                }
+            ];
+
+            const container = document.getElementById('worksheet-container');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const stepCounter = document.getElementById('step-counter');
+            let currentStep = 0;
+
+            function renderStep(stepIndex) {
+                const step = steps[stepIndex];
+                container.innerHTML = `
+                    <div id="step-${stepIndex}" class="step-content">
+                        <h2 class="text-2xl font-bold mb-6 text-center text-white">${step.title}</h2>
+                        ${step.content}
+                    </div>
+                `;
+                
+                const stepEl = document.getElementById(`step-${stepIndex}`);
+                stepEl.classList.remove('active');
+                void stepEl.offsetWidth; 
+                stepEl.classList.add('active');
+
+                // Render LaTeX after the content is in the DOM
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError : false
+                });
+            }
+
+            function updateButtons() {
+                prevBtn.disabled = currentStep === 0;
+                nextBtn.disabled = currentStep === steps.length - 1;
+                stepCounter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    renderStep(currentStep);
+                    updateButtons();
+                    window.scrollTo(0,0);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    renderStep(currentStep);
+                    updateButtons();
+                    window.scrollTo(0,0);
+                }
+            });
+
+            // Initial render
+            renderStep(currentStep);
+            updateButtons();
+        });
+    </script>
+</body>
+</html>
